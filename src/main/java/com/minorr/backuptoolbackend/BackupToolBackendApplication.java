@@ -8,6 +8,7 @@ public class BackupToolBackendApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BackupToolBackendApplication.class, args);
+		System.out.println("test");
 	}
 
 }
