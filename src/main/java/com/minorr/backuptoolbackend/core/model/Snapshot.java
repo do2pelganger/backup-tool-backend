@@ -6,14 +6,14 @@ public class Snapshot {
 
     private UUID id;
     private String name;
-    private LocalDateTime dateCreated;
+    private LocalDateTime dateTimeCreated;
     private long size;
     private String comment;
 
     public Snapshot(String name, long size, String comment){
         this.id = UUID.randomUUID();
         this.name = name;
-        this.dateCreated = LocalDateTime.now();
+        this.dateTimeCreated = LocalDateTime.now();
         this.size = size;
         this.comment = comment;
     }
@@ -24,8 +24,8 @@ public class Snapshot {
     public String getName(){
         return name;
     }
-    public LocalDateTime getDateCreated(){
-        return dateCreated;
+    public LocalDateTime getDateTimeCreated(){
+        return dateTimeCreated;
     }
     public long getSize(){
         return size;
