@@ -1,7 +1,6 @@
 package com.minorr.backuptoolbackend.core.model;
 
 import java.time.LocalDateTime;
-
 /**
  *   { "disk":"c", "used":"160800", "free":"474200", "lastSnap":"23.08.2021 14:23", "type":"Local fixed disk", "compressed":"no", "fileSystem":"NTFS","serialNumber":"702B4546" }
  */
@@ -14,17 +13,16 @@ public class Disk {
     private String type;
     private Boolean isCompressed;
     private String fileSystem;
-    private String serialNumber;
+    private String model;
 
-    public Disk(String label, Long used, Long free, LocalDateTime dateTimeLastSnap, String type, Boolean isCompressed, String fileSystem, String serialNumber){
+    public Disk(String label, Long used, Long free, LocalDateTime dateTimeLastSnap, String type, String fileSystem, String model){
         this.label = label;
         this.used = used;
         this.free = free;
         this.dateTimeLastSnap = dateTimeLastSnap;
         this.type = type;
-        this.isCompressed = isCompressed;
         this.fileSystem = fileSystem;
-        this.serialNumber = serialNumber;
+        this.model = model;
     }
 
     public String getLabel(){
@@ -42,14 +40,26 @@ public class Disk {
     public String getType(){
         return type;
     }
-    public Boolean getIsCompressed(){
-        return isCompressed;
-    }
-    public String getFileSysString(){
+    public String getFileSystem(){
         return fileSystem;
     }
-    public String getSerialNumber(){
-        return serialNumber;
+    public String getModel(){
+        return model;
     }
 
+    @Override
+    public String toString(){
+        StringBuilder result = new StringBuilder();
+        result.append("{");
+        result.append("label:" + label);
+        result.append(",used: " + used);
+        result.append(",free: " + free);
+        // result.append(",dateTimeLastSnap: " + dateTimeLastSnap.toString());
+        result.append(",type: " + type);
+        result.append(",fileSystem: " + fileSystem);
+        result.append(",model: " + model);
+        result.append("}");
+
+        return result.toString();
+    }
 }

@@ -10,9 +10,8 @@ public class DiskBuilder {
     private Long free;
     private LocalDateTime dateTimeLastSnap;
     private String type;
-    private Boolean isCompressed;
     private String fileSystem;
-    private String serialNumber;
+    private String model;
     
     public void setLabel(String label){
         this.label = label;
@@ -29,17 +28,22 @@ public class DiskBuilder {
     public void setType(String type){
         this.type = type;
     }
-    public void setIsCompressed(Boolean isCompressed){
-        this.isCompressed = isCompressed;
-    }
-    public void setFileSysString(String fileSystem){
+    public void setFileSystem(String fileSystem){
         this.fileSystem = fileSystem;
     }
-    public void setSerialNumber(String serialNumber){
-        this.serialNumber = serialNumber;
+    public void setModel(String model){
+        this.model = model;
     } 
-
+    public void reset(){
+        this.label = null;
+        this.used = null;
+        this.free = null;
+        this.dateTimeLastSnap = null;
+        this.type = null;
+        this.fileSystem = null;
+        this.model = null;
+    }
     public Disk build(){
-        return new Disk(label, used, free, dateTimeLastSnap, type, isCompressed, fileSystem, serialNumber);
+        return new Disk(label, used, free, dateTimeLastSnap, type, fileSystem, model);
     }
 }
