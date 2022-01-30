@@ -27,7 +27,7 @@ public class FileSystemInfoDebug {
 
         ArrayList<Disk> disks = new ArrayList<Disk>(); 
         DiskBuilder diskBuilder = new DiskBuilder();
-
+        System.out.println("length: " + osFileStores.size());
         for(OSFileStore fileStore : osFileStores) {
             System.out.println("Description: " + fileStore.getDescription());
             System.out.println("Label: " + fileStore.getLabel());
@@ -47,13 +47,15 @@ public class FileSystemInfoDebug {
                 List<HWPartition> partitions = store.getPartitions();
                 for(HWPartition partition : partitions){
     
-                    System.out.println("Name: " + store.getName());
-                    System.out.println("Model: " + store.getModel());
-                    System.out.println("Partition:  " + partition.getMountPoint());
+                    
                     if(partition.getMountPoint().equals(fileStore.getMount())){
                         fsPartition = partition;
+                        System.out.println("Name: " + store.getName());
+                        System.out.println("Model: " + store.getModel());
+                        System.out.println("Partition:  " + partition.getMountPoint());
+                        System.out.println("            Size: " + FormatUtil.formatBytes(partition.getSize()));
+
                     }
-                    System.out.println("            Size: " + FormatUtil.formatBytes(partition.getSize()));
     
                 }
             }
