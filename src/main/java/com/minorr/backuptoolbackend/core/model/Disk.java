@@ -7,16 +7,17 @@ import java.time.LocalDateTime;
 public class Disk {
     
     private String label;
+    private String mount;
     private Long used;
     private Long free;
     private LocalDateTime dateTimeLastSnap;
     private String type;
-    private Boolean isCompressed;
     private String fileSystem;
     private String model;
 
-    public Disk(String label, Long used, Long free, LocalDateTime dateTimeLastSnap, String type, String fileSystem, String model){
+    public Disk(String label, String mount, Long used, Long free, LocalDateTime dateTimeLastSnap, String type, String fileSystem, String model){
         this.label = label;
+        this.mount = mount;
         this.used = used;
         this.free = free;
         this.dateTimeLastSnap = dateTimeLastSnap;
@@ -27,6 +28,9 @@ public class Disk {
 
     public String getLabel(){
         return label;
+    }
+    public String getMount(){
+        return mount;
     }
     public Long getUsed(){
         return used;

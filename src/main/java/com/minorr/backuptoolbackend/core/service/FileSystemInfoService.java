@@ -1,4 +1,4 @@
-package com.minorr.backuptoolbackend.core.util;
+package com.minorr.backuptoolbackend.core.service;
 
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
@@ -13,15 +13,18 @@ import java.util.ArrayList;
 import java.util.List;
 import com.minorr.backuptoolbackend.core.model.Disk;
 import com.minorr.backuptoolbackend.core.util.DiskBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public class FileSystemInfo {
+@Service
+public class FileSystemInfoService {
     private SystemInfo systemInfo;
     private List<OSFileStore> osFileStores;
     private List<HWDiskStore> hwDiskStores;
 
-    public FileSystemInfo(){
+    @Autowired
+    public FileSystemInfoService(){
         this.systemInfo = new SystemInfo();
-
         initOSFileStores();
         initHWDiskStores();
     }
@@ -50,29 +53,30 @@ public class FileSystemInfo {
     public ArrayList<Disk> getDisksInfo(){
         ArrayList<Disk> disks = new ArrayList<Disk>(); 
         DiskBuilder diskBuilder = new DiskBuilder();
-        HWDiskStore fsDStore;
+        HWDiskStore hwDStore;
 
         for(OSFileStore fileStore : this.osFileStores) {
             diskBuilder.reset();
 
-            diskBuilder.setLabel(fileStore.getMount());
+            diskBuilder.setLabel(fileStore.getLabel());
+            diskBuilder.setMount(fileStore.getMount());
             diskBuilder.setType(fileStore.getName());
             diskBuilder.setFileSystem(fileStore.getType());
             diskBuilder.setUsed((fileStore.getTotalSpace() - fileStore.getFreeSpace()));
             diskBuilder.setFree(fileStore.getFreeSpace());
             
-            fsDStore = null;
+            hwDStore = null;
 
             for(HWDiskStore store : this.hwDiskStores){
                 List<HWPartition> partitions = store.getPartitions();
                 for(HWPartition partition : partitions){
                     if(partition.getMountPoint().equals(fileStore.getMount())){
-                        fsDStore = store;
+                        hwDStore = store;
                     }
                 }
             }
-            if(fsDStore != null){
-                diskBuilder.setModel(fsDStore.getModel());
+            if(hwDStore != null){
+                diskBuilder.setModel(hwDStore.getModel());
             }
             disks.add(diskBuilder.build());            
 

@@ -6,6 +6,7 @@ import com.minorr.backuptoolbackend.core.model.Disk;
 public class DiskBuilder {
     
     private String label;
+    private String mount;
     private Long used;
     private Long free;
     private LocalDateTime dateTimeLastSnap;
@@ -15,6 +16,9 @@ public class DiskBuilder {
     
     public void setLabel(String label){
         this.label = label;
+    }
+    public void setMount(String mount){
+        this.mount = mount;
     }
     public void setUsed(Long used){
         this.used = used;
@@ -36,6 +40,7 @@ public class DiskBuilder {
     } 
     public void reset(){
         this.label = null;
+        this.mount = null;
         this.used = null;
         this.free = null;
         this.dateTimeLastSnap = null;
@@ -44,6 +49,6 @@ public class DiskBuilder {
         this.model = null;
     }
     public Disk build(){
-        return new Disk(label, used, free, dateTimeLastSnap, type, fileSystem, model);
+        return new Disk(label, mount, used, free, dateTimeLastSnap, type, fileSystem, model);
     }
 }
