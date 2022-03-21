@@ -1,26 +1,26 @@
 package com.minorr.backuptoolbackend.core.model;
 
 public class Settings {
-    private String encryptionMethod;
-    private String compressionMethod;
-    private String masterPasswordHash;
+    private Integer encryptionMethod;
+    private Integer compressionMethod;
+    private String masterPassword;
     private String storageFolder;
 
-    public Settings(String encryptionMethod, String compressionMethod, String masterPasswordHash, String storageFolder){
+    public Settings(Integer encryptionMethod, Integer compressionMethod, String masterPassword, String storageFolder){
         this.encryptionMethod = encryptionMethod;
         this.compressionMethod = compressionMethod;
-        this.masterPasswordHash = masterPasswordHash;
+        this.masterPassword = masterPassword;
         this.storageFolder = storageFolder;
     }
 
-    public String getEncryptionMethod(){
+    public Integer getEncryptionMethod(){
         return encryptionMethod;
     }
-    public String getCompressionMethod(){
+    public Integer getCompressionMethod(){
         return compressionMethod;
     }
-    public String getMasterPasswordHash(){
-        return masterPasswordHash;
+    public String getMasterPassword(){
+        return masterPassword;
     }
     public String getStorageFolder(){
         return storageFolder;
