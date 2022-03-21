@@ -5,4 +5,6 @@ public class StorageConfiguration {
     public static final String STORAGE = HOME + "storage" + "\\";
 
     public static final String ENCRYPTED_EXT = ".wnbck";
+    public static final String COMPRESSED_EXT = ".zip";
+
 }
