@@ -36,7 +36,35 @@ public class DBHelper {
             return false;
         }
     }
-   
+    public Boolean beginTransaction(){
+        try {
+            this.getConnection().setAutoCommit(false);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public Boolean commitTransaction(){
+        try {
+            this.getConnection().commit();
+            this.getConnection().setAutoCommit(true);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public Boolean rollbackTransaction(){
+        try {
+            this.getConnection().rollback();
+            this.getConnection().setAutoCommit(true);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     public Connection getConnection() {  
         if(this.conn == null){
             try {  
