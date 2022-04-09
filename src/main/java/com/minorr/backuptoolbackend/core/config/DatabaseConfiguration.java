@@ -4,12 +4,19 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DatabaseConfiguration {
-    public static final String DB_NAME = "system_data";
+    public static final String DB_NAME = "system_data.db";
 
-    private static final String DDL_BACKUPS = "CREATE TABLE IF NOT EXISTS backups(" 
+    // table names
+    public static final String BACKUPS_TABLENAME = "backups";
+    public static final String SETTINGS_TABLENAME = "settings";
+    public static final String ENCRYPTION_METHODS_TABLENAME = "encryption_methods";
+    public static final String COMPRESSION_METHODS_TABLENAME = "compression_methods";
+
+    private static final String DDL_BACKUPS = "CREATE TABLE IF NOT EXISTS " + BACKUPS_TABLENAME + "(" 
         + "id	TEXT NOT NULL UNIQUE,"
         + "name	TEXT NOT NULL,"
         + "comment	TEXT,"
+        + "path	TEXT NOT NULL,"
         + "created	INTEGER NOT NULL,"
         + "size	REAL,"
         + "compression_method	INTEGER NOT NULL,"
@@ -18,19 +25,23 @@ public class DatabaseConfiguration {
         + "PRIMARY KEY(id)"
     + ");";
     
-    private static final String DDL_SETTINGS = "CREATE TABLE IF NOT EXISTS settings ("
-        + "encryption_method	INTEGER NOT NULL,"
-        + "compression_method	INTEGER NOT NULL,"
-        + "master_password	TEXT"
+    private static final String DDL_SETTINGS = "CREATE TABLE IF NOT EXISTS " + SETTINGS_TABLENAME + "("
+        + "encryption_method	INTEGER,"
+        + "compression_method	INTEGER,"
+        + "master_password	TEXT,"
+        + "storage_folder	TEXT NOT NULL,"
+        + "is_encryption_enabled	INTEGER NOT NULL,"
+        + "is_compression_enabled	INTEGER NOT NULL,"
+        + "is_master_enabled	INTEGER NOT NULL"
     + ");";
 
-    private static final String DDL_ENCRYPION_METHODS = "CREATE TABLE IF NOT EXISTS encryption_methods ("
+    private static final String DDL_ENCRYPION_METHODS = "CREATE TABLE IF NOT EXISTS " + ENCRYPTION_METHODS_TABLENAME + "("
         + "id	INTEGER NOT NULL UNIQUE,"
         + "name	TEXT NOT NULL,"
         + "PRIMARY KEY(id AUTOINCREMENT)"
     + ");";
 
-    private static final String DDL_COMPRESSION_METHODS = "CREATE TABLE IF NOT EXISTS compression_methods ("
+    private static final String DDL_COMPRESSION_METHODS = "CREATE TABLE IF NOT EXISTS " + COMPRESSION_METHODS_TABLENAME + "( "
         + "id	INTEGER NOT NULL UNIQUE,"
         + "name	TEXT NOT NULL,"
         + "PRIMARY KEY(id AUTOINCREMENT)"
