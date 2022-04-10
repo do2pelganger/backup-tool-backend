@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 
 import com.minorr.backuptoolbackend.core.config.StorageConfiguration;
 import com.minorr.backuptoolbackend.core.model.Backup;
+import com.minorr.backuptoolbackend.core.model.ProgressStatus;
 import com.minorr.backuptoolbackend.core.repository.BackupRepository;
 import com.minorr.backuptoolbackend.core.util.BackupBuilder;
 
@@ -94,6 +95,9 @@ public class BackupController {
         this.zipController.zip(b.getPath(), settingsController.getStorageFolder() + b.getId().toString() + StorageConfiguration.ENCRYPTED_EXT);
     }
     
+    public ProgressStatus getProgress(){
+        return this.zipController.getProgressStatus();
+    }
     private Boolean clearStorageFolderFrom(String backupId){
         return this.fileManagerController.deleteFilesWithPrefix(StorageConfiguration.STORAGE, backupId);
     }

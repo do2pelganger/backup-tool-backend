@@ -4,6 +4,8 @@ public class ProgressStatus {
     private String currentFileName;
     private int percentDone;
 
+    public ProgressStatus(){}
+    
     public ProgressStatus(String currentFileName, int percentDone){
         this.currentFileName = currentFileName;
         this.percentDone = percentDone;

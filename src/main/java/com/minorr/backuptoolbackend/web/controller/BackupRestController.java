@@ -3,6 +3,7 @@ package com.minorr.backuptoolbackend.web.controller;
 import javax.validation.Valid;
 
 import com.minorr.backuptoolbackend.core.controller.BackupController;
+import com.minorr.backuptoolbackend.core.model.ProgressStatus;
 import com.minorr.backuptoolbackend.core.repository.BackupRepository;
 import com.minorr.backuptoolbackend.web.config.Configuration;
 import com.minorr.backuptoolbackend.web.config.MessageTemplates;
@@ -13,6 +14,10 @@ import com.minorr.backuptoolbackend.web.model.response.BasicResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,17 +25,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@EnableScheduling
 @RequestMapping("/backups")
 @CrossOrigin(origins = Configuration.FRONT_URL)
 public class BackupRestController {
+    public final long FIXED_RATE = 5000;
+
 
     private BackupRepository backupRepository;
     private BackupController backupController;
 
+    // socket utils
+    private SimpMessagingTemplate template;
+    // private TaskScheduler taskScheduler;
+    
     @Autowired
-    public BackupRestController(BackupRepository backupRepository, BackupController backupController){
+    public BackupRestController(BackupRepository backupRepository, BackupController backupController, SimpMessagingTemplate template/*, TaskScheduler ts*/){
         this.backupRepository = backupRepository;
         this.backupController = backupController;
+        this.template = template;
+        // this.taskScheduler = ts;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -56,6 +70,7 @@ public class BackupRestController {
     public BasicResponse restoreBackup(@Valid @RequestBody BackupRestoreRequest backupRestoreRequest){
         System.out.println("Backup Id: " + backupRestoreRequest.getBackupId());
         if(backupController.restoreBackup(backupRestoreRequest.getBackupId())){
+            // this.taskScheduler.scheduleAtFixedRate(greeting(), FIXED_RATE);
             BasicResponse response = new BasicResponse(HttpStatus.OK, MessageTemplates.NO_MSG);
             return response;
         }
@@ -63,5 +78,15 @@ public class BackupRestController {
         // throw new IncorrectPasswordException();
         
         
+    }
+    
+    @Scheduled(fixedRate = 5000)
+    // public Runnable greeting() {
+    public void greeting() {
+        ProgressStatus ps = this.backupController.getProgress();
+        System.out.println("scheduled");
+        // return () -> this.template.convertAndSend("/hello", "Hello");
+        this.template.convertAndSend("/topic/greetings", ps);
+
     }
 }

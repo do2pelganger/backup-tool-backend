@@ -57,11 +57,11 @@ public class ZipController {
         try{
             ZipFile zf =  new ZipFile(zipFilePath);
             this.progressMonitor = zf.getProgressMonitor();
-            // zf.setRunInThread(true);
             if(this.passwordHash != null){
                 System.out.println("password has been set " + this.passwordHash);
                 zf.setPassword(this.passwordHash.toCharArray());
             }
+            zf.setRunInThread(true);
             zf.addFolder(new File(sourceFolder), this.params);
             zf.close();
             return true;
@@ -88,11 +88,14 @@ public class ZipController {
         }
     }
 
-    public ProgressStatus getProgress(){
-        ProgressStatusBuilder psb = new ProgressStatusBuilder();
-        psb.setCurrentFileName(this.progressMonitor.getFileName());
-        psb.setPercentDone(this.progressMonitor.getPercentDone());
-        return psb.build();
+    public ProgressStatus getProgressStatus(){
+        if(this.progressMonitor != null){
+            ProgressStatusBuilder psb = new ProgressStatusBuilder();
+            psb.setCurrentFileName(this.progressMonitor.getFileName());
+            psb.setPercentDone(this.progressMonitor.getPercentDone());
+            return psb.build();
+        }
+       throw new IllegalStateException("ProgressMonitor was not initialized");
     }
 
     // public static void main(String[] args) throws IOException {
