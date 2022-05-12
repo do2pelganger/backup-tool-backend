@@ -3,22 +3,15 @@ package com.minorr.backuptoolbackend.core.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.concurrent.TimeUnit;
 
-import com.minorr.backuptoolbackend.core.config.StorageConfiguration;
-import com.minorr.backuptoolbackend.core.model.ProgressStatus;
-import com.minorr.backuptoolbackend.core.util.ProgressStatusBuilder;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import net.lingala.zip4j.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.model.UnzipParameters;
 import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.model.enums.AesKeyStrength;
 import net.lingala.zip4j.model.enums.CompressionMethod;
 import net.lingala.zip4j.model.enums.EncryptionMethod;
-import net.lingala.zip4j.progress.ProgressMonitor;
 
 /**
  * @TODO
@@ -27,42 +20,43 @@ import net.lingala.zip4j.progress.ProgressMonitor;
 @Controller
 public class ZipController {
 
-    private ZipParameters params;
-    private ProgressMonitor progressMonitor;
+    private ZipParameters paramsZip;
     private String passwordHash;
 
     public ZipController(){
         this.passwordHash = null;
-        this.params = new ZipParameters();
+        this.paramsZip = new ZipParameters();
         init();
     }
 
     private void init(){
-        if(this.params != null) {
-            this.params.setCompressionMethod(CompressionMethod.DEFLATE);
+        if(this.paramsZip != null) {
+            this.paramsZip.setCompressionMethod(CompressionMethod.DEFLATE);
         }
     }
 
     public void enableEncryption(String passwordHash){
         this.passwordHash = passwordHash;
         System.out.println("encryption enabled with password " + passwordHash);
-        this.params.setCompressionMethod(CompressionMethod.DEFLATE);
-        this.params.setEncryptFiles(true);
-        this.params.setEncryptionMethod(EncryptionMethod.AES);
+        this.paramsZip.setCompressionMethod(CompressionMethod.DEFLATE);
+        this.paramsZip.setEncryptFiles(true);
+        this.paramsZip.setEncryptionMethod(EncryptionMethod.AES);
         // Below line is optional. AES 256 is used by default. You can override it to use AES 128. AES 192 is supported only for extracting.
-        this.params.setAesKeyStrength(AesKeyStrength.KEY_STRENGTH_256);
+        this.paramsZip.setAesKeyStrength(AesKeyStrength.KEY_STRENGTH_256);
+        this.paramsZip.setReadHiddenFiles(false);
+        this.paramsZip.setReadHiddenFolders(false);
+
+
     }
 
     public Boolean zip(String sourceFolder, String zipFilePath){
         try{
             ZipFile zf =  new ZipFile(zipFilePath);
-            this.progressMonitor = zf.getProgressMonitor();
             if(this.passwordHash != null){
                 System.out.println("password has been set " + this.passwordHash);
                 zf.setPassword(this.passwordHash.toCharArray());
             }
-            zf.setRunInThread(true);
-            zf.addFolder(new File(sourceFolder), this.params);
+            zf.addFolder(new File(sourceFolder), this.paramsZip);
             zf.close();
             return true;
         } catch (IOException e) {
@@ -73,10 +67,11 @@ public class ZipController {
 
     public Boolean unzip(String zipFilePath, String destDir){
         try {
+            System.out.println("zipFilePath=" + zipFilePath + " destDir=" + destDir);
             ZipFile zf =  new ZipFile(zipFilePath);
-            this.progressMonitor = zf.getProgressMonitor();
-            zf.setRunInThread(true);  
-            if(this.passwordHash != null){
+            // zf.setRunInThread(true);  
+            if(zf.isEncrypted() && this.passwordHash != null){
+                System.out.println("setting password  " + this.passwordHash);
                 zf.setPassword(this.passwordHash.toCharArray());
             }      
             zf.extractAll(destDir);
@@ -87,33 +82,4 @@ public class ZipController {
             throw new UncheckedIOException(e);
         }
     }
-
-    public ProgressStatus getProgressStatus(){
-        if(this.progressMonitor != null){
-            ProgressStatusBuilder psb = new ProgressStatusBuilder();
-            psb.setCurrentFileName(this.progressMonitor.getFileName());
-            psb.setPercentDone(this.progressMonitor.getPercentDone());
-            return psb.build();
-        }
-       throw new IllegalStateException("ProgressMonitor was not initialized");
-    }
-
-    // public static void main(String[] args) throws IOException {
-    //     ZipController cc = new ZipController(StorageConfiguration.DEBUG_PASSWORD_HASH);
-    //     String sourceFolder = "C:\\Users\\montr\\Pictures\\_13456";
-    //     String zipFilePath = "M:\\dev\\projects\\backup-tool-backend\\storage\\_13456.wbck";
-    //     long startTime = System.nanoTime();
-    //     cc.zip(sourceFolder, zipFilePath, StorageConfiguration.DEBUG_PASSWORD_HASH);
-    //     long endTime   = System.nanoTime();
-    //     long totalTime = endTime - startTime;
-
-    //     System.out.println("Zip time: " + TimeUnit.SECONDS.convert(totalTime, TimeUnit.NANOSECONDS));
-    //     // startTime = System.nanoTime();
-
-    //     // cc.unzip(zipFilePath, sourceFolder + "_UNZIPPED");
-    //     // endTime   = System.nanoTime();
-    //     // totalTime = endTime - startTime;
-
-    //     // System.out.println("Unzip time: " + TimeUnit.SECONDS.convert(totalTime, TimeUnit.NANOSECONDS));
-    // }
 }

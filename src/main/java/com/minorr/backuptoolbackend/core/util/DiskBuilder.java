@@ -14,30 +14,31 @@ public class DiskBuilder {
     private String fileSystem;
     private String model;
     
-    public void setLabel(String label){
+    public void setLabel(String label) {
         this.label = label;
     }
-    public void setMount(String mount){
+    public void setMount(String mount) {
         this.mount = mount;
     }
-    public void setUsed(Long used){
+    public void setUsed(Long used) {
         this.used = used;
     }
-    public void setFree(Long free){
+    public void setFree(Long free) {
         this.free = free;
     }
-    public void setDateTimeLastSnap(LocalDateTime dateTimeLastSnap){
+    public void setDateTimeLastSnap(LocalDateTime dateTimeLastSnap) {
         this.dateTimeLastSnap = dateTimeLastSnap;
     }
-    public void setType(String type){
+    public void setType(String type) {
         this.type = type;
     }
-    public void setFileSystem(String fileSystem){
+    public void setFileSystem(String fileSystem) {
         this.fileSystem = fileSystem;
     }
-    public void setModel(String model){
+    public void setModel(String model) {
         this.model = model;
-    } 
+    }
+
     public void reset(){
         this.label = null;
         this.mount = null;

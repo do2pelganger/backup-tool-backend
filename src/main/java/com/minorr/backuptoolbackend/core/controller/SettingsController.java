@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 import com.minorr.backuptoolbackend.core.config.StorageConfiguration;
+import com.minorr.backuptoolbackend.core.model.Settings;
 import com.minorr.backuptoolbackend.core.repository.SettingsRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,10 @@ public class SettingsController {
     @Autowired
     public SettingsController(SettingsRepository settingsRepository){
         this.settingsRepository = settingsRepository;
+    }
+
+    public Settings getSettings(){
+        return this.settingsRepository.getAll();
     }
 
     public String getMasterPasswordHash(){

@@ -9,12 +9,12 @@ public class Backup {
     private String comment;
     private String path;
     private Long created;
-    private Long size;
+    private Double size;
     private Integer compressionMethod;
     private Integer encryptionMethod;
     private Boolean isCustomPassword;
 
-    public Backup(UUID id, String name, Long size, String comment, String path, Integer compressionMethod, Integer encryptionMethod, Boolean isCustomPassword){
+    public Backup(UUID id, String name, Double size, String comment, String path, Integer compressionMethod, Integer encryptionMethod, Boolean isCustomPassword){
         this.id = id;
         this.name = name;
         this.comment = comment;
@@ -26,7 +26,7 @@ public class Backup {
         this.isCustomPassword = isCustomPassword;
     }
 
-    public Backup(UUID id, String name, Long size, String comment, String path, Long created, Integer compressionMethod, Integer encryptionMethod, Boolean isCustomPassword){
+    public Backup(UUID id, String name, Double size, String comment, String path, Long created, Integer compressionMethod, Integer encryptionMethod, Boolean isCustomPassword){
         this.id = id;
         this.name = name;
         this.comment = comment;
@@ -53,7 +53,7 @@ public class Backup {
     public Long getCreated(){
         return created;
     }
-    public Long getSize(){
+    public Double getSize(){
         return size;
     }
     public Integer getCompressionMethod(){
@@ -66,7 +66,22 @@ public class Backup {
         return isCustomPassword;
     }
 
-    public void setSize(Long size){
+    public void setSize(Double size){
         this.size = size;
+    }
+
+    @Override
+    public String toString(){
+        return "Backup{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", comment='" + comment + '\'' +
+                ", path='" + path + '\'' +
+                ", created=" + created +
+                ", size=" + size +
+                ", compressionMethod=" + compressionMethod +
+                ", encryptionMethod=" + encryptionMethod +
+                ", isCustomPassword=" + isCustomPassword +
+                '}';
     }
 }

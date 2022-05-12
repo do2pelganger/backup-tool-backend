@@ -44,7 +44,7 @@ public class BackupRepository {
                 bb.setComment(rs.getString(3));
                 bb.setPath(rs.getString(4));
                 bb.setCreated(rs.getLong(5));
-                bb.setSize(rs.getLong(6));
+                bb.setSize(rs.getDouble(6));
                 bb.setCompressionMethod(rs.getInt(7));
                 bb.setEncryptionMethod(rs.getInt(8));
                 bb.setIsCustomPassword(rs.getBoolean(9));
@@ -75,7 +75,7 @@ public class BackupRepository {
                 bb.setComment(rs.getString(3));
                 bb.setPath(rs.getString(4));
                 bb.setCreated(rs.getLong(5));
-                bb.setSize(rs.getLong(6));
+                bb.setSize(rs.getDouble(6));
                 bb.setCompressionMethod(rs.getInt(7));
                 bb.setEncryptionMethod(rs.getInt(8));
                 bb.setIsCustomPassword(rs.getBoolean(9));
@@ -97,7 +97,7 @@ public class BackupRepository {
             ps.setString(4,backup.getPath());
 
             ps.setLong(5,backup.getCreated());
-            ps.setLong(6,backup.getSize());
+            ps.setDouble(6,backup.getSize());
             ps.setInt(7,backup.getCompressionMethod());
             ps.setInt(8,backup.getEncryptionMethod());
             ps.setBoolean(9,backup.getIsCustomPassword());

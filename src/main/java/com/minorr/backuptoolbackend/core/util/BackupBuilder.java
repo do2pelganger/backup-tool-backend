@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import com.minorr.backuptoolbackend.core.model.Backup;
 
+
 public class BackupBuilder {
     
     private UUID id;
@@ -11,7 +12,7 @@ public class BackupBuilder {
     private String comment;
     private String path;
     private Long created;
-    private Long size;
+    private Double size;
     private Integer compressionMethod;
     private Integer encryptionMethod;
     private Boolean isCustomPassword;
@@ -34,7 +35,7 @@ public class BackupBuilder {
     public void setCreated(Long created){
         this.created = created;
     }
-    public void setSize(Long size){
+    public void setSize(Double size){
         this.size = size;
     }
     public void setCompressionMethod(Integer compressionMethod){

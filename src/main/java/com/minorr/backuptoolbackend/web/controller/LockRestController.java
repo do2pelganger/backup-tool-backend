@@ -9,6 +9,7 @@ import com.minorr.backuptoolbackend.web.config.Configuration;
 import com.minorr.backuptoolbackend.web.config.MessageTemplates;
 import com.minorr.backuptoolbackend.web.model.request.UnlockRequest;
 import com.minorr.backuptoolbackend.web.model.response.BasicResponse;
+import com.minorr.backuptoolbackend.web.model.response.CollectionResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,10 +34,10 @@ public class LockRestController {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public BasicResponse unlock(@Valid @RequestBody UnlockRequest unlockRequest){
+    public CollectionResponse unlock(@Valid @RequestBody UnlockRequest unlockRequest){
         System.out.println(unlockRequest.getPassword());
         if(this.settingsController.isMasterPassCorrect(unlockRequest.getPassword())){
-            BasicResponse response = new BasicResponse(HttpStatus.OK, MessageTemplates.NO_MSG);
+            CollectionResponse response = new CollectionResponse(HttpStatus.OK, MessageTemplates.NO_MSG);
             return response;
         }
         
